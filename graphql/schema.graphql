@@ -18,8 +18,24 @@ type Query {
       name: String @where(operator: "like")
     ): [User!]! @paginate(defaultCount: 10)
 
-    posts: [Post!]! @paginate(defaultCount: 10)
+    posts: [Post!]! @paginate(defaultCount: 10) @orderBy(column:"created_at",direction:DESC)
     post(id: ID @eq): Post @find
+}
+
+type Mutation{
+    createPost(
+        user_id: ID!
+        title: String! @rules(apply:["required","min:3"])
+        body: String! @rules(apply:["required","min:3"])
+    ): Post @create
+    updatePost(
+        id: ID!
+        title: String! @rules(apply:["required","min:3"])
+        body: String! @rules(apply:["required","min:3"])
+    ): Post @update
+    deletePost(
+        id: ID!
+    ): Post @delete
 }
 
 "Account of a person who utilizes this application."
